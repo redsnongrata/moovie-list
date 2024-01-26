@@ -1,0 +1,133 @@
+import React, { useState } from 'react';
+
+// MovieCard Component
+const MovieCard = ({ movie }) => {
+  return (
+    <div style={{ border: '1px solid #ddd', padding: '10px', margin: '10px', width: '200px' }}>
+      <img src={movie.posterURL} alt={movie.title} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+      <h3>{movie.title}</h3>
+      <p>{movie.description}</p>
+      <p>Rating: {movie.rating}</p>
+    </div>
+  );
+};
+
+// MovieList Component
+const MovieList = ({ movies }) => {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      {movies.map((movie) => (
+        <MovieCard key={movie.title} movie={movie} />
+      ))}
+    </div>
+  );
+};
+
+// Filter Component
+const Filter = ({ onFilterChange }) => {
+  const [titleFilter, setTitleFilter] = useState('');
+  const [rateFilter, setRateFilter] = useState('');
+
+  const handleFilterChange = () => {
+    onFilterChange({
+      title: titleFilter,
+      rate: rateFilter,
+    });
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Filter by Title"
+        value={titleFilter}
+        onChange={(e) => setTitleFilter(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Filter by Rating"
+        value={rateFilter}
+        onChange={(e) => setRateFilter(e.target.value)}
+      />
+      <button onClick={handleFilterChange}>Apply Filter</button>
+    </div>
+  );
+};
+
+// Main App Component
+const App = () => {
+  const [movies, setMovies] = useState([
+    {
+      title: 'Inception',
+      description: 'A mind-bending thriller',
+      posterURL: 'inception.jpg',
+      rating: 5,
+    },
+    // Add more movies as needed
+  ]);
+
+  const addMovie = (newMovie) => {
+    setMovies([...movies, newMovie]);
+  };
+
+  const filterMovies = ({ title, rate }) => {
+    // Filter movies based on title and/or rating
+    const filteredMovies = movies.filter(
+      (movie) =>
+        movie.title.toLowerCase().includes(title.toLowerCase()) &&
+        movie.rating.toString().includes(rate)
+    );
+
+    // Update the state with filtered movies
+    setMovies(filteredMovies);
+  };
+
+  return (
+    <div>
+      <Filter onFilterChange={filterMovies} />
+      <MovieList movies={movies} />
+      {/* Form to add a new movie */}
+      <div>
+        <h2>Add a New Movie</h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const title = e.target.title.value;
+            const description = e.target.description.value;
+            const posterURL = e.target.posterURL.value;
+            const rating = parseFloat(e.target.rating.value);
+
+            addMovie({ title, description, posterURL, rating });
+
+            // Clear the form
+            e.target.reset();
+          }}
+        >
+          <label>
+            Title:
+            <input type="text" name="title" required />
+          </label>
+          <br />
+          <label>
+            Description:
+            <textarea name="description" required />
+          </label>
+          <br />
+          <label>
+            Poster URL:
+            <input type="text" name="posterURL" required />
+          </label>
+          <br />
+          <label>
+            Rating:
+            <input type="number" name="rating" step="0.1" min="0" max="10" required />
+          </label>
+          <br />
+          <button type="submit">Add Movie</button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default App;
