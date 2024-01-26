@@ -1,0 +1,22 @@
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
+
+const MovieDetail = ({ movies }) => {
+  const { title } = useParams();
+  const movie = movies.find((m) => m.title.toLowerCase().replace(/\s+/g, '-') === title);
+
+  if (!movie) {
+    return <div>Movie not found!</div>;
+  }
+
+  return (
+    <div>
+      <h2>{movie.title}</h2>
+      <p>{movie.description}</p>
+      <iframe width="560" height="315" src={movie.trailerLink} title="movie-trailer" frameBorder="0" allowFullScreen></iframe>
+      <Link to="/">Go Back to Home</Link>
+    </div>
+  );
+};
+
+export default MovieDetail;

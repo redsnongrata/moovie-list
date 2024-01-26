@@ -126,7 +126,18 @@ const App = () => {
           <button type="submit">Add Movie</button>
         </form>
       </div>
-    </div>
+    </div>// Example Movie Data
+const movies = [
+  {
+    title: 'Inception',
+    description: 'A mind-bending thriller.',
+    posterURL: 'inception.jpg',
+    rating: 5,
+    trailerLink: 'https://www.youtube.com/embed/8hP9D6kZseM', // Example trailer link
+  },
+  // Add more movies as needed
+];
+
   );
 };
 

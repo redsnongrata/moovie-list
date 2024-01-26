@@ -16,6 +16,38 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
+          import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import MovieCard from './MovieCard';
+import MovieDetail from './MovieDetail';
+
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" exact>
+          <div>
+            {/* Render Movie Cards */}
+            {/* Assume movies data is available */}
+            {movies.map((movie) => (
+              <MovieCard key={movie.title} movie={movie} />
+            ))}
+          </div>
+        </Route>
+        <Route path="/movies/:title" exact>
+          {/* Render Movie Detail */}
+          {/* Assume movies data is available */}
+          <MovieDetail movies={movies} />
+        </Route>
+        <Route path="*">
+          <div>404 - Not Found</div>
+        </Route>
+      </Switch>
+    </Router>
+
+
+
+
         </a>
       </header>
     </div>
